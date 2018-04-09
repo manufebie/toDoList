@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+    <section class="mt-4">
+        <div class="row">
+            <div class="col-lg-6 offset-lg-3">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h6 class="card-title">New Task</h6>
+                        <form action="{% url 'tasks:create' %}" method="POST" role="form";>
+                            {% csrf_token %}
+                            {{ form.body }}
+                            <input type="submit" value="Add" class="btn btn-outline-success">
+                        </form>
+                        <a href="{% url 'tasks:delete-completed' %}" class="btn btn-outline-danger btn-sm mt-2">Delete completed tasks</a>
+                    </div>
+                </div>
+                <ul class="list-group">
+                    {% for t in tasks %}
+                        {% if t.complete %}
+                            <li class="list-group-item list-group-item-success list-group-item-action">
+                                <div class="d-flex justify-content-between align-items-center">
+                                {{ t.body }}
+                                <span class="badge badge-success badge-pill">Completed</span>
+                                </div>
+                                <small>
+                                    {% if request.user.is_authenticated %}
+                                        You added this task on {{ t.timestamp|date:'D d M Y' }}
+                                    {% else %}
+                                        {{ t.user }} added this task on {{ t.timestamp|date:'D d M Y' }}
+                                    {% endif %}
+                                </small>
+                            </li>
+                        {% else %}
+                            <li class="list-group-item list-group-item-action">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    {{ t.body }}
+                                    <a href="{% url 'tasks:complete' t.id %}" class="btn btn-outline-secondary btn-sm">Active</a>
+                                </div>
+                                <small>
+                                    {% if request.user.is_authenticated %}
+                                        You added this task on {{ t.timestamp|date:'D d M Y' }}
+                                    {% else %}
+                                        {{ t.user }} added this task on {{ t.timestamp|date:'D d M Y' }}
+                                    {% endif %}
+                                </small>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </section>
+{% endblock %}

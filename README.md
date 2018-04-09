@@ -1,0 +1,1 @@
+Pretty Printed posted a video series on Django 2.0. I still use Django 1.11 when I start projects but I thought it would be nice to see how Django 2.0 works. So this tutorial gave me a little insight on Django 2.0.
